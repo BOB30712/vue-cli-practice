@@ -40,6 +40,9 @@ export default {
         Swiper,
         SwiperSlide,
      },
+     provide: {
+        message2: 'helloooo!'
+    },
     setup() {
     return {
      modules: [Autoplay, Pagination, Navigation],

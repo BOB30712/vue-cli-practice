@@ -18,18 +18,36 @@ const routes = [
     component: () => import('../views/TestView.vue')
   },
   {
-    path:'/',
+    path:'/HomePage',
     name:'homepage',
     component: () => import('../views/HomePage.vue')
   },
   {
-    path:'/UserBoard',
+    path:'/',
     name:'UserBoard',
     component: () => import('../views/UserBoard.vue'),
     children:[
       {
         path:'UserCart',
         component: () => import('../views/UserCart.vue')
+      },
+      {
+        path:'UserCartList',
+        component: () => import('../views/UserCartList.vue')
+      }
+    ]
+  },
+  {
+    path:'/AcompPage',
+    name:'acomppage',
+    component: () => import('../views/AcompPage.vue'),
+    children:[
+      {
+        path:'AcompPage2',
+        components:{
+          left:() => import('../views/AcompPage1.vue'),
+          right:() => import('../views/AcompPage2.vue')
+        } 
       }
     ]
   }

@@ -7,6 +7,8 @@
             <li class="px-0"><a class="d-block selector fs-3 fw-bold mb-2 text-nowrap" href="#" @click.prevent="selector('濃縮咖啡')"><i class="bi bi-cup-fill icon"></i>濃縮咖啡</a></li>
             <li class="px-0"><a class="d-block selector fs-3 fw-bold mb-2 text-nowrap" href="#" @click.prevent="selector('拿鐵')"><i class="bi bi-cup-fill icon"></i>拿鐵</a></li>
             <li class="px-0"><a class="d-block selector fs-3 fw-bold mb-2 text-nowrap" href="#" @click.prevent="selector('分類1')"><i class="bi bi-cup-fill icon"></i>分類1</a></li>
+            <li class="px-0"><a class="d-block selector fs-3 fw-bold mb-2 text-nowrap" href="#" @click.prevent="addFavorite()"><i class="bi bi-cup-fill icon"></i>{{message}}</a></li>
+            <li class="px-0"><a class="d-block selector fs-3 fw-bold mb-2 text-nowrap" href="#" @click.prevent="getFavorite()"><i class="bi bi-cup-fill icon"></i>{{message}}</a></li>
         </ul>
     </div>
     <div class="col-lg-8 col-12">
@@ -15,13 +17,13 @@
             <li class="col">
                 <div class="card w-100 position-relative test1-link">
                     <div class="position-absolute top-0 end-0 m-3 test1">
-                        <router-link to="/"><i class="bi bi-heart-fill fs-3"></i></router-link>
+                        <a href="#" @click.prevent="addFavorite()"><i class="bi bi-heart-fill fs-3"></i></a>
                     </div>
                     <img :src="item.imageUrl" class="card-img-top" alt="..." style="height:200px;object-fit: cover;">
                     <div class="card-body">
                         <h3>{{item.content}}咖啡</h3>
                         <div class="d-flex">
-                            <a href="" class="fs-4"><i class="bi bi-cart-fill test3 px-3"></i></a>
+                            <a href="" class="fs-4" @click.prevent="addCart(item.id)"><i class="bi bi-cart-fill test3 px-3"></i></a>
                             <p class="card-text ms-auto fs-4">售價$: {{item.price}}</p>
                         </div>
                     </div>
@@ -122,13 +124,33 @@ export default {
     data () {
         return {
             products:[],
-            color:''
+            num:0
         }
     },
+    inject:['message'],
     methods: {
+        addCart(id){
+            const cart={
+                product_id: id,
+                qty: 1
+            };
+            const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`
+            this.$http.post(api,{data:cart})
+            .then((res) => {
+                console.log(res)
+            });
+        },
+        addFavorite(){
+            this.num++;
+            //localStorage.setItem('count', this.num);
+            this.$emitter.emit('senddata', this.num);
+        },
+        getFavorite(){
+            alert(localStorage.getItem('count'))
+        },
         selector (category) {
-            //alert(category);
-            const api = `https://vue3-course-api.hexschool.io/api/noname-myfirst-vueproject/products/all`
+            //alert(`${process.env.VUE_APP_API}`);
+            const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products/all`
             this.$http.get(api)
             .then((res) => {
                 if(category!='all'){
@@ -142,7 +164,7 @@ export default {
         }
     },
     created () {
-        const api = `https://vue3-course-api.hexschool.io/api/noname-myfirst-vueproject/products/all`
+        const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products/all`
         this.$http.get(api)
         .then((res) => {
             /*
@@ -155,7 +177,7 @@ export default {
         });
         $(document).ready(function(){
             $('.selector').click(function(){
-                $(this).toggleClass('active').parent().siblings().find('.selector').removeClass('active');
+                $(this).addClass('active').parent().siblings().find('.selector').removeClass('active');
             })
         })
     }
