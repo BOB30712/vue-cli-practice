@@ -25,7 +25,7 @@
           <router-link class="link nav-link fs-3" to="/AcompPage/AcompPage2"><i class="bi bi-heart"><div class="divright"><p class="rounded px-1">{{num}}</p></div></i></router-link>
         </li>
         <li class="nav-item">
-          <router-link class="link nav-link fs-3" to="/UserCartList"><i class="bi bi-cart-fill"></i></router-link>
+          <router-link class="link nav-link fs-3" to="/UserCartList"><i class="bi bi-cart-fill"><div class="divright"><p class="rounded px-1">{{cartnum}}</p></div></i></router-link>
         </li>
       </ul>
     </div>
@@ -37,12 +37,28 @@
     import $ from 'jquery'
     export default {
       data () {
-            return {
-              num:0
-            }
-        },
+        return {
+          num:0,
+          cartnum:0
+        }
+      },
+      methods:{
+        getproduct(){
+          const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`
+          this.$http.get(url)
+          .then((res) => {
+            this.cartnum=res.data.data.carts.length
+          })
+        }
+      },
       created(){
+        const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`
+            this.$http.get(url)
+            .then((res) => {
+                this.cartnum=res.data.data.carts.length
+            })
         this.$emitter.on('senddata', (data) => { this.num = data })
+        this.$emitter.on('productcart', this.getproduct)
         /*
         if(localStorage.getItem('count')){
         this.num=localStorage.getItem('count22');
@@ -89,7 +105,6 @@ nav {
     color: #2c3e50;
 
     &.router-link-exact-active{
-      color: red;
       background-color: white;
     }
   }

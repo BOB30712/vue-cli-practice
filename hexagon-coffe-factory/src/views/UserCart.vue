@@ -1,4 +1,8 @@
 <template>
+    <div class="form-floating mt-5">
+        <input type="text" class="form-control border border-2 border-dark rounded-pill" id="floatingInput" placeholder="123" v-model="search" style="padding-left: 20px;">
+        <label for="floatingInput" class="ms-2">search</label>
+    </div>
     <div class="row mt-5">
     <div class="col-lg-4 col-12">
         <ul class="list-unstyled row row-cols-lg-1 row-cols-3">
@@ -13,22 +17,23 @@
     </div>
     <div class="col-lg-8 col-12">
     <ul class="list-unstyled row row-cols-1 row-cols-lg-3 gy-3">
-        <template v-for="item in products" :key="item">
+        <template v-for="item in filterProduct" :key="item">
             <li class="col">
                 <div class="card w-100 position-relative test1-link">
                     <div class="position-absolute top-0 end-0 m-3 test1">
-                        <a href="#" @click.prevent="addFavorite()"><i class="bi bi-heart-fill fs-3"></i></a>
+                        <button :disabled="this.status==item.id" @click.prevent="addFavorite()" style="border: 0px solid black;background-color:transparent;"><i class="bi bi-heart-fill fs-3 py-0 text-danger" v-if="this.status==item.id"></i><i class="bi bi-heart-fill fs-3 py-0 text-white" v-else></i></button>
                     </div>
                     <img :src="item.imageUrl" class="card-img-top" alt="..." style="height:200px;object-fit: cover;">
                     <div class="card-body">
                         <h3>{{item.content}}咖啡</h3>
                         <div class="d-flex">
-                            <a href="" class="fs-4" @click.prevent="addCart(item.id)"><i class="bi bi-cart-fill test3 px-3"></i></a>
+                            <button class="fs-4" @click.prevent="addCart(item.id)" v-if="this.status!=item.id"><i class="bi bi-cart-fill px-2"></i></button>
+                            <button class="fs-4 ms-2" @click.prevent="addCart(item.id)" disabled v-else><i class="bi bi-box-seam-fill"></i></button>
                             <p class="card-text ms-auto fs-4">售價$: {{item.price}}</p>
                         </div>
                     </div>
-                    <div class="card-img-overlay test1 h-25" style="background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));margin-top: 100px;">
-                        <router-link to="/"><p class="card-text text-white text-center fw-bold border test2 p-3" style="letter-spacing: 5px;">了解更多</p></router-link>
+                    <div class="card-img-overlay test1 h-25" style="background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));margin-top: 100px;">
+                        <router-link to="/"><p class="card-text text-white text-center fw-bold test2 p-3" style="letter-spacing: 5px;">了解更多</p></router-link>
                     </div>
                 </div>
             </li>
@@ -40,6 +45,10 @@
 </template>
 
 <style>
+    button:hover{
+        transition: all 0.7s;
+        transform:scale(1.2);
+    }
     .active.selector{
         color: black;
     }
@@ -69,34 +78,24 @@
     .selector:hover{
        color: black; 
     }
-    .test3{
-        color: white;
-        background-color: black;
-    }
-    .test3:hover{
-        color: black;
-        background-color: white;
-    }
     .test2{
         position: relative;
+        border: 2px solid #fff;
     }
     .test2::after{
-        top: 6px;
-        left: 6px;
+        top: 10px;
+        left: 10px;
         content: " ";
         width: 100%;
         height: 100%;
         position: absolute;
-        border: 1px solid #fff;	
+        border: 2px solid #fff;	
     }
      .test2:hover::after{
         top: 0;
         left: 0;
-        border: 1px solid #fff;
+        border: 2px solid #fff;
         transition: all 0.8s;
-    }
-    i:hover{
-        color: brown;
     }
     .test1{
         display: none;
@@ -123,21 +122,32 @@ import $ from 'jquery'
 export default {
     data () {
         return {
+            search:'',
             products:[],
-            num:0
+            num:0,
+            status:''
         }
     },
     inject:['message'],
+    computed:{
+        filterProduct(){
+            return this.products.filter(item=>{
+                return item.title.match(this.search)
+            })
+        }
+    },
     methods: {
         addCart(id){
             const cart={
                 product_id: id,
                 qty: 1
             };
+            this.status=id;
             const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`
             this.$http.post(api,{data:cart})
             .then((res) => {
                 console.log(res)
+                this.$emitter.emit('productcart',id)
             });
         },
         addFavorite(){

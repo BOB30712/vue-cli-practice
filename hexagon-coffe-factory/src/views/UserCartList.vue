@@ -27,32 +27,34 @@
                 </td>
                 <td>
                     <div class="input-group" style="width: 150px;">
-                    <button type="button" class="btn btn-outline-dark" @click.prevent="DecreaseCartQty(item.id,item.qty)" :disabled="item.qty == 1">
+                    <button type="button" class="btn btn-outline-dark" @click.prevent="UpdateCartQty(item.id,item.qty-1)" :disabled="item.qty == 1">
                         <i class="bi bi-dash"></i>
                     </button>
                     <input
                         v-model="item.qty"
-                        type="text"
+                        @change="UpdateCartQty(item.id,item.qty)"
+                        type="number"
                         min="1"
                         class="form-control form-control-sm text-center border-dark bg-transparent"
                     />
-                    <button type="button" class="btn btn-outline-dark" @click.prevent="IncreaseCartQty(item.id,item.qty)">
+                    <button type="button" class="btn btn-outline-dark" @click.prevent="UpdateCartQty(item.id,item.qty+1)">
                         <i class="bi bi-plus"></i>
                     </button>
                     </div>
                 </td>
                 <td>{{item.final_total}}</td>
-                <td class="text-center fs-3"><i class="bi bi-x-square-fill"></i></td>
+                <td class="text-center fs-3"><button @click.prevent="DeleteCart(item.id)"><i class="bi bi-x-square-fill"></i></button></td>
                 </tr>
             </tbody>
             </table>
         </div>
-        <div class="col-lg-3 col-10 border border-secondary border-3 p-3 mb-5">
+        <div class="col-lg-3 col-10 border border-secondary border-3 p-3 mb-5 h-100">
             <p>商品總計:<span class="fs-3 fw-bold ms-2">{{totalPrice}}</span></p>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="輸入優惠碼" aria-label="Recipient's username" aria-describedby="button-addon2">
-                <button class="btn btn-outline-dark" type="button" id="button-addon2">輸入優惠碼</button>
+            <div class="input-group mb-3 mt-auto">
+                <input type="text" class="form-control" placeholder="輸入優惠碼" aria-label="Recipient's username" aria-describedby="button-addon2" v-model="couponcode">
+                <button class="btn btn-outline-dark" type="button" id="button-addon2" @click.prevent="UseCoupon(couponcode)">輸入優惠碼</button>
             </div>
+            <button type="button" class="btn btn-danger w-100 mb-4" @click.prevent="DeleteAllCart">刪除所有購物車</button>
             <button type="button" class="btn btn-dark w-100">進入下一步</button>
         </div>
     </div>
@@ -114,7 +116,8 @@
         data () {
             return {
                 ProductCart:[],
-                totalPrice:0
+                totalPrice:0,
+                couponcode:''
             }
         },
         methods:{
@@ -128,30 +131,47 @@
                         console.log('ProductCart',this.ProductCart)
                     })
             },
-            IncreaseCartQty (id,qty) {
+            UpdateCartQty(id,qty){
                 const data={
                     "product_id":id,
-                    "qty":qty+1
+                    "qty":qty
                 }
                 const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart/${id}`
-                    this.$http.put(url,{'data':data})
-                    .then((res) => {
-                        console.log(res)
-                        this.getProductCart()
-                    })
+                this.$http.put(url,{'data':data})
+                .then((res) => {
+                    console.log(res)
+                    this.getProductCart()
+                })
             },
-            DecreaseCartQty (id,qty) {
-                const data={
-                    "product_id":id,
-                    "qty":qty-1
-                }
+            DeleteCart(id){
                 const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart/${id}`
-                    this.$http.put(url,{'data':data})
-                    .then((res) => {
-                        console.log(res)
-                        this.getProductCart()
-                    })
+                this.$http.delete(url)
+                .then((res) => {
+                    console.log(res)
+                    this.getProductCart()
+                    this.$emitter.emit('productcart','觸發子元件重新整理')
+                })
             },
+            DeleteAllCart(){
+                const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/carts`
+                this.$http.delete(url)
+                .then((res) => {
+                    console.log(res)
+                    this.getProductCart()
+                    this.$emitter.emit('productcart','觸發子元件重新整理')
+                })
+            },
+            UseCoupon(code){
+                const coupon={
+                    'code':code
+                }
+                const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/coupon`
+                this.$http.post(api,{data:coupon})
+                .then((res) => {
+                    console.log(res)
+                    this.getProductCart();
+                });
+            }
         },
         created () {
             this.getProductCart();
