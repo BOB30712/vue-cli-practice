@@ -1,4 +1,5 @@
 <template>
+    <frontnavbar/>
     <swiper
     :style="{
       '--swiper-navigation-color':'#FFFFFF',
@@ -52,10 +53,14 @@
             <h2>加入會員</h2>
         </div>
     </div>
+    <productswiper/>
   </div>
+
 </template>
 
 <script>
+import frontnavbar from '@/components/FrontNavbar.vue'
+import productswiper from '@/components/ProductSwiper.vue'
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -66,6 +71,8 @@ export default {
     components: {
         Swiper,
         SwiperSlide,
+        frontnavbar,
+        productswiper
      },
     setup() {
     return {
@@ -90,7 +97,7 @@ body {
 
 .swiper {
   width: 100%;
-  height: 600px;
+  height: 100%;
 }
 
 .swiper-slide {

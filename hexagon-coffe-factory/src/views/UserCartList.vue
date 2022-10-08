@@ -5,7 +5,7 @@
         <li>step3</li>
     </ul>
     <div class="row justify-content-center">
-        <div class="col-lg-8 col-10 border border-secondary border-3 p-3 mb-5 me-lg-5">
+        <div class="col-lg-8 col-10 border border-secondary border-3 p-3 mb-5 me-lg-5 table-responsive-lg">
             <table class="table">
             <thead class="table-dark">
                 <tr>
@@ -33,7 +33,7 @@
                     <input
                         v-model="item.qty"
                         @change="UpdateCartQty(item.id,item.qty)"
-                        type="number"
+                        type="text"
                         min="1"
                         class="form-control form-control-sm text-center border-dark bg-transparent"
                     />
@@ -101,7 +101,7 @@
   content:none;
 }
 .progress-cart  li.active {
-  color:green;
+  color:#955d42;
 }
 .progress-cart  li.active:before {
   border-color:black;
@@ -134,7 +134,7 @@
             UpdateCartQty(id,qty){
                 const data={
                     "product_id":id,
-                    "qty":qty
+                    "qty":Number(qty)
                 }
                 const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart/${id}`
                 this.$http.put(url,{'data':data})

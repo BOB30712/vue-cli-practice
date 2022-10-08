@@ -8,9 +8,7 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link fs-3" href="#">首頁</a>
-          <ul>
-          </ul>
+          <router-link class="nav-link fs-3" to="/HomePage">首頁</router-link>
         </li>
         <li class="nav-item">
           <router-link class="nav-link fs-3" to="/UserCart">購買商品</router-link>
@@ -19,7 +17,7 @@
           <a class="nav-link fs-3" href="#">課程報名</a>
         </li>
         <li class="nav-item">
-          <router-link class="link nav-link fs-3" to="/UserCartList">關於我們</router-link>
+          <router-link class="link nav-link fs-3" to="/AboutUs">關於我們</router-link>
         </li>
         <li class="nav-item">
           <router-link class="link nav-link fs-3" to="/AcompPage/AcompPage2"><i class="bi bi-heart"><div class="divright"><p class="rounded px-1">{{num}}</p></div></i></router-link>

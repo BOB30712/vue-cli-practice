@@ -51,15 +51,18 @@
     }
     .active.selector{
         color: black;
+        z-index: 20px;
     }
     .selector::after{
+        z-index: -10px;
         position: absolute;
         content: " ";
-        top: 0;
+        top: 0px;
         left: 0;
         width: 0%;
         height: 100%;
-        border-bottom: 5px solid black;
+        /*background: linear-gradient(-45deg, transparent 10%, #955d42 0);*/
+        border-bottom: 10px solid black;
     }
     .selector:hover::after{
         width: 100%;
