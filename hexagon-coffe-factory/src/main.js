@@ -7,6 +7,7 @@ import VueAxios from 'vue-axios'
 import mitt from 'mitt'
 import 'bootstrap'
 
+
 const emitter = mitt()
 const app=createApp(App)
 app.config.globalProperties.$emitter = emitter

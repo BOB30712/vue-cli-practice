@@ -88,5 +88,13 @@
       </div>
     </div>
   </div>
+  <typewriter2/>
 </div>
 </template>
+
+<script>
+import typewriter2 from '@/components/TypeWriter2.vue'
+export default{
+  components:{typewriter2}
+}
+</script>

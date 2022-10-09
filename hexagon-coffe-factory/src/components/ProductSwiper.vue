@@ -10,29 +10,21 @@
     }"
     :navigation="true"
     :modules="modules"
-    class="mySwiper"
+    class="mySwiper mb-5"
 >
-    <swiper-slide2>
-        <div class="card border border-5">
-        <div class="card-body">
-            <h5 class="card-title text-end">Card title</h5>
-            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="card-link text-dark">Card link</a>
-            <a href="#" class="card-link">Another link</a>
+    <template v-for="item in product" :key="item">
+      <swiper-slide2>
+        <div class="card bg-dark text-white w-100 detail-link">
+        <img :src="item.imageUrl" class="card-img" alt="商品" style="height: 300px;object-fit: cover;">
+        <div class="card-img-overlay top-auto bg-dark-gradient">
+          <div class="mb-5 d-flex justify-content-center detail">
+            <router-link to="/" class="detail"><p class="text-white text-center fw-bold test2 p-3" style="letter-spacing: 5px;">了解更多</p></router-link>
+          </div>
+          <h3 class="card-title text-start  ps-4 author fw-bold">{{item.title}}</h3>
         </div>
-        </div>
-    </swiper-slide2>
-    <swiper-slide2>
-        Slide 3
-    </swiper-slide2>
-    <swiper-slide2>Slide 3</swiper-slide2>
-    <swiper-slide2>Slide 4</swiper-slide2>
-    <swiper-slide2>Slide 5</swiper-slide2>
-    <swiper-slide2>Slide 6</swiper-slide2>
-    <swiper-slide2>Slide 7</swiper-slide2>
-    <swiper-slide2>Slide 8</swiper-slide2>
-    <swiper-slide2>Slide 9</swiper-slide2>
+      </div>
+      </swiper-slide2>
+    </template>
 </swiper>
 </template>
 <script>
@@ -48,15 +40,33 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper";
 
 export default {
-components: {
-    Swiper,
-    SwiperSlide2:SwiperSlide,
-},
-setup() {
+  data () {
     return {
-    modules: [ Navigation],
-    };
-},
+      product:[]
+    }
+  },
+  components: {
+      Swiper,
+      SwiperSlide2:SwiperSlide,
+  },
+  methods:{
+    getallproduct(){
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products/all`
+      this.$http.get(api)
+        .then((res) => {
+          this.product=res.data.products
+          console.log('product',this.product);
+        });
+    }
+  },
+  setup() {
+      return {
+      modules: [ Navigation],
+      };
+  },
+  created () {
+    this.getallproduct();
+  }
 };
 </script>
 <style>
@@ -81,7 +91,7 @@ body {
   height: 200px;
 }
 
-.swiper-slide2 {
+.swiper-slide{
   font-size: 50px;
   background: transparent;
 
@@ -99,13 +109,44 @@ body {
   -webkit-align-items: center;
   align-items: center;
 }
-
-.swiper-slide img {
+.bg-dark-gradient {
+  background-image: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
+}
+.detail{
+  display: none;
+}
+.detail-link{
+  overflow: hidden;
+}
+.detail-link img{
+  transition: all 0.8s;
+}
+.detail-link:hover .detail{
   display: block;
+}
+.test2{
+  width: 100%;
+  position: relative;
+  border: 2px solid #fff;
+}
+.test2::after{
+  top: 10px;
+  left: 10px;
+  content: " ";
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  position: absolute;
+  border: 2px solid #fff;	
 }
-
+.test2:hover::after{
+  top: 0;
+  left: 0;
+  border: 2px solid #fff;
+  transition: all 0.8s;
+}
+.detail-link:hover img{
+  transform: scale(1.2);
+  transition: all 0.8s;
+}
 </style>
   

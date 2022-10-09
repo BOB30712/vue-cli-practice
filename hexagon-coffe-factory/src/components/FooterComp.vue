@@ -1,6 +1,6 @@
 <template>
     <footer>
-        <div class="container p-0 text-white">
+        <div class="ps-5 text-white position-relative" style="overflow:hidden;">
         <div class="d-lg-flex justify-content-start">
             <div class="me-4">
                 <h2 class="mb-0 py-3">聯絡方式</h2>
@@ -19,8 +19,8 @@
                 <li class="fs-5"><a href=""><i class="bi bi-caret-right-fill me-1"></i>訂單專區</a></li>
                 </ul>
             </div>
-            <div class="ms-auto mt-auto">
-                <p class="fs-1 text-end"><i class="bi bi-cup-hot"></i></p>
+            <div class="ms-auto mt-auto position-absolute">
+                <p class="text-end" style="font-size: 200px;"><i class="bi bi-cup-hot"></i></p>
             </div>
         </div>
         <p class="text-center py-3">僅個人練習使用．不做商業用途</p>
@@ -38,5 +38,9 @@
     }
     a:hover{
         color: gray;
+    }
+    .position-absolute{
+        bottom: -90px;
+        right: -80px;
     }
 </style>
