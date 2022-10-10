@@ -14,7 +14,7 @@
           <router-link class="nav-link fs-3" to="/UserCart">購買商品</router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link fs-3" href="#">課程報名</a>
+          <router-link class="nav-link fs-3" to="/JoinCourse">課程報名</router-link>
         </li>
         <li class="nav-item">
           <router-link class="link nav-link fs-3" to="/AboutUs">關於我們</router-link>

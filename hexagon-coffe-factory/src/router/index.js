@@ -32,8 +32,16 @@ const routes = [
         component: () => import('../views/UserCart.vue')
       },
       {
+        path:'UserProduct/:productid',
+        component: () => import('../views/UserProduct.vue')
+      },
+      {
         path:'UserCartList',
         component: () => import('../views/UserCartList.vue')
+      },
+      {
+        path:'JoinCourse',
+        component: () => import('../views/JoinCourse.vue')
       },
       {
         path:'AboutUs',

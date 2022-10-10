@@ -33,7 +33,7 @@
                         </div>
                     </div>
                     <div class="card-img-overlay test1 h-25" style="background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));margin-top: 100px;">
-                        <router-link to="/"><p class="card-text text-white text-center fw-bold test2 p-3" style="letter-spacing: 5px;">了解更多</p></router-link>
+                        <a @click="getProduct(item.id)"><p class="card-text text-white text-center fw-bold test2 p-3" style="letter-spacing: 5px;">了解更多</p></a>
                     </div>
                 </div>
             </li>
@@ -152,6 +152,9 @@ export default {
                 console.log(res)
                 this.$emitter.emit('productcart',id)
             });
+        },
+        getProduct (id) {
+        this.$router.push(`/UserProduct/${id}`)
         },
         addFavorite(){
             this.num++;

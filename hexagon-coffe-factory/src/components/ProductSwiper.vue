@@ -8,6 +8,20 @@
     :pagination="{
     clickable: true,
     }"
+      :breakpoints="{
+      '200': {
+        slidesPerView: 1,
+        spaceBetween: 20,
+      },
+      '768': {
+        slidesPerView: 1,
+        spaceBetween: 40,
+      },
+      '1024': {
+        slidesPerView: 3,
+        spaceBetween: 30,
+      },
+    }"
     :navigation="true"
     :modules="modules"
     class="mySwiper mb-5"
@@ -18,7 +32,7 @@
         <img :src="item.imageUrl" class="card-img" alt="商品" style="height: 300px;object-fit: cover;">
         <div class="card-img-overlay top-auto bg-dark-gradient">
           <div class="mb-5 d-flex justify-content-center detail">
-            <router-link to="/" class="detail"><p class="text-white text-center fw-bold test2 p-3" style="letter-spacing: 5px;">了解更多</p></router-link>
+            <a @click="getProduct(item.id)" class="detail"><p class="text-white text-center fw-bold test2 p-3" style="letter-spacing: 5px;">了解更多</p></a>
           </div>
           <h3 class="card-title text-start  ps-4 author fw-bold">{{item.title}}</h3>
         </div>
@@ -57,6 +71,9 @@ export default {
           this.product=res.data.products
           console.log('product',this.product);
         });
+    },
+    getProduct (id) {
+      this.$router.push(`/UserProduct/${id}`)
     }
   },
   setup() {

@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
+  <div>
     <h1>
-      Hi, I'm a
+      教你/妳
       <span class="typed-text">{{ typeValue }}</span>
       <span class="blinking-cursor">|</span>
       <span class="cursor" :class="{ typing: typeStatus }">&nbsp;</span>
@@ -16,7 +16,7 @@ export default {
     return {
       typeValue: "",
       typeStatus: false,
-      displayTextArray: ["YouTuber", "Developer", "Blogger", "Designer", "Freelancer"],
+      displayTextArray: ["煮出完美咖啡", "做出各式拉花", "成為咖啡達人"],
       typingSpeed: 100,
       erasingSpeed: 100,
       newTextDelay: 2000,
@@ -73,7 +73,7 @@ export default {
   align-items: center;
 }
 h1 {
-  font-size: 6rem;
+  font-size: 4rem;
   font-weight: normal;
   span.typed-text {
     color: #d2b94b;
