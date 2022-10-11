@@ -165,5 +165,20 @@ body {
   transform: scale(1.2);
   transition: all 0.8s;
 }
+ .swiper-button-next,
+  .swiper-button-prev {
+    color: white;
+    font-weight: bold;
+    top: 45%;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #303840;
+  }
+  .swiper-button-next:after,
+  .swiper-button-prev:after {
+    font-size: 12px;
+    font-weight: bold;
+  }
 </style>
   

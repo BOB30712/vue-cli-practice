@@ -1,4 +1,5 @@
 <template>
+    <LoadIng :active="isLoading"></LoadIng>
     <div class="form-floating mt-5">
         <input type="text" class="form-control border border-2 border-dark rounded-pill" id="floatingInput" placeholder="123" v-model="search" style="padding-left: 20px;">
         <label for="floatingInput" class="ms-2">search</label>
@@ -11,8 +12,6 @@
             <li class="px-0"><a class="d-block selector fs-3 fw-bold mb-2 text-nowrap" href="#" @click.prevent="selector('濃縮咖啡')"><i class="bi bi-cup-fill icon"></i>濃縮咖啡</a></li>
             <li class="px-0"><a class="d-block selector fs-3 fw-bold mb-2 text-nowrap" href="#" @click.prevent="selector('拿鐵')"><i class="bi bi-cup-fill icon"></i>拿鐵</a></li>
             <li class="px-0"><a class="d-block selector fs-3 fw-bold mb-2 text-nowrap" href="#" @click.prevent="selector('分類1')"><i class="bi bi-cup-fill icon"></i>分類1</a></li>
-            <li class="px-0"><a class="d-block selector fs-3 fw-bold mb-2 text-nowrap" href="#" @click.prevent="addFavorite()"><i class="bi bi-cup-fill icon"></i>{{message}}</a></li>
-            <li class="px-0"><a class="d-block selector fs-3 fw-bold mb-2 text-nowrap" href="#" @click.prevent="getFavorite()"><i class="bi bi-cup-fill icon"></i>{{message}}</a></li>
         </ul>
     </div>
     <div class="col-lg-8 col-12">
@@ -27,8 +26,8 @@
                     <div class="card-body">
                         <h3>{{item.content}}咖啡</h3>
                         <div class="d-flex">
-                            <button class="fs-4" @click.prevent="addCart(item.id)" v-if="this.status!=item.id"><i class="bi bi-cart-fill px-2"></i></button>
-                            <button class="fs-4 ms-2" @click.prevent="addCart(item.id)" disabled v-else><i class="bi bi-box-seam-fill"></i></button>
+                            <button class="fs-4 addtocart" @click.prevent="addCart(item.id)" v-if="this.status!=item.id"><i class="bi bi-cart-fill px-2"></i></button>
+                            <button class="fs-4 ms-2 addtocart" @click.prevent="addCart(item.id)" disabled v-else><i class="bi bi-box-seam-fill"></i></button>
                             <p class="card-text ms-auto fs-4">售價$: {{item.price}}</p>
                         </div>
                     </div>
@@ -45,7 +44,7 @@
 </template>
 
 <style>
-    button:hover{
+    .addtocart:hover{
         transition: all 0.7s;
         transform:scale(1.2);
     }
@@ -128,7 +127,8 @@ export default {
             search:'',
             products:[],
             num:0,
-            status:''
+            status:'',
+            isLoading:true
         }
     },
     inject:['message'],
@@ -189,6 +189,7 @@ export default {
           });
           */
           this.products=res.data.products;
+          this.isLoading=false
           console.log(this.products);
         });
         $(document).ready(function(){

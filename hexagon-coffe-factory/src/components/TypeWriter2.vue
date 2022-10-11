@@ -2,6 +2,7 @@
   <div>
     <h1>
       教你/妳
+      <br class="d-lg-none">
       <span class="typed-text">{{ typeValue }}</span>
       <span class="blinking-cursor">|</span>
       <span class="cursor" :class="{ typing: typeStatus }">&nbsp;</span>

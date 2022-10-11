@@ -4,25 +4,26 @@
             <img class="w-100" style="height: 300px;object-fit: cover;" :src="product.imageUrl" alt="商品圖片">
         </div>
         <div class="col-lg-4 col-8 card border-0" style="height: 300px;">
-            <h1>{{product.title}}</h1>
-            <p>分類:<span class="border rounded-pill border-4 border-dark px-2 ms-3">{{product.category}}</span></p>
+            <h1 style="color:brown;">{{product.title}}</h1>
+            <p>分類:<span class="border rounded-pill border-3 border-dark px-2 ms-3">{{product.category}}</span></p>
             <h2 class="text-lg-end">價格:{{product.price}}</h2>
             <textarea class="mb-4" name="" id="" cols="20" rows="10" v-model="product.description"></textarea>
             <div class="d-flex justify-content-between mt-lg-auto">
                 <div class="input-group" style="width: 150px;">
-                    <button type="button" class="btn btn-outline-dark">
+                    <button type="button" class="btn btn-outline-dark" :disabled="productqty==1" @click.prevent="updateqty(productqty-1)">
                         <i class="bi bi-dash"></i>
                     </button>
                     <input
+                        v-model="productqty"
                         type="text"
                         min="1"
                         class="form-control form-control-sm text-center border-dark bg-transparent"
                     />
-                    <button type="button" class="btn btn-outline-dark">
+                    <button type="button" class="btn btn-outline-dark" @click.prevent="updateqty(productqty+1)">
                         <i class="bi bi-plus"></i>
                     </button>
                 </div>
-                <button type="button" class="btn btn-outline-dark">加入購物車</button>
+                <button type="button" class="btn btn-outline-dark text-nowrap" @click.prevent="AddtoCart(id,productqty)">加入購物車</button>
             </div>
         </div>
     </div>
@@ -61,10 +62,14 @@ export default{
     data () {
         return {
             id:'',
+            productqty:1,
             product:{},
         }
     },
     methods:{
+        updateqty(qty){
+            this.productqty=qty
+        },
         productinfo(){
             const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/product/${this.id}`
             this.$http.get(api)
@@ -72,6 +77,20 @@ export default{
                 this.product = res.data.product
                 console.log(this.product)
             })
+        },
+        AddtoCart(id,qty){
+        const data={
+            "product_id":id,
+            "qty":Number(qty)
+        }
+        console.log(data)
+        const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`
+        this.$http.post(api,{'data':data})
+        .then((res) => {
+            console.log(res)
+            this.$emitter.emit('productcart','觸發子元件重新整理')
+            this.productqty=1
+        })
         }
     },
     created () {
