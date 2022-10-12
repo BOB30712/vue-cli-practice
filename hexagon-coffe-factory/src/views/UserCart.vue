@@ -26,8 +26,8 @@
                     <div class="card-body">
                         <h3>{{item.content}}咖啡</h3>
                         <div class="d-flex">
-                            <button class="fs-4 addtocart" @click.prevent="addCart(item.id)" v-if="this.status!=item.id"><i class="bi bi-cart-fill px-2"></i></button>
-                            <button class="fs-4 ms-2 addtocart" @click.prevent="addCart(item.id)" disabled v-else><i class="bi bi-box-seam-fill"></i></button>
+                            <button class="fs-4 addtocart" @click.prevent="addCart(item.id,item.title)" v-if="this.status!=item.id"><i class="bi bi-cart-fill px-2"></i></button>
+                            <button class="fs-4 ms-2 addtocart" @click.prevent="addCart(item.id,item.title)" disabled v-else><i class="bi bi-box-seam-fill"></i></button>
                             <p class="card-text ms-auto fs-4">售價$: {{item.price}}</p>
                         </div>
                     </div>
@@ -140,7 +140,7 @@ export default {
         }
     },
     methods: {
-        addCart(id){
+        addCart(id,name){
             const cart={
                 product_id: id,
                 qty: 1
@@ -151,6 +151,7 @@ export default {
             .then((res) => {
                 console.log(res)
                 this.$emitter.emit('productcart',id)
+                this.$emitter.emit('opentoast',{style:'success',text:name+'加入購物車成功'})
             });
         },
         getProduct (id) {

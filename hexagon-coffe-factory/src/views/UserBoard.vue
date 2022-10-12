@@ -3,13 +3,16 @@
     <div class="container">
         <router-view></router-view>
     </div>
+    <toastmessages/>
 </template>
 
 <script>
 import FrontNavbar from '@/components/FrontNavbar.vue'
+import toastmessages from '@/components/ToastMessages.vue'
 export default {
     components:{
-        FrontNavbar
+        FrontNavbar,
+        toastmessages
     },
     provide: {
         message: 'hello!'

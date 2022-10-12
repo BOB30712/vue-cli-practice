@@ -46,6 +46,10 @@ const routes = [
       {
         path:'AboutUs',
         component: () => import('../views/AboutUs.vue')
+      },
+      {
+        path:'SendOrder',
+        component: () => import('../views/SendOrder.vue')
       }
     ]
   },

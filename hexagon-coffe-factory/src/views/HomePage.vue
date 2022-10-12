@@ -46,14 +46,14 @@
   </swiper>
   <div class="container">
     <div class="row align-items-center my-3 animated-top" :class="{ 'fadeIn-top': act }">
-        <div class="col text-center d-none d-lg-block">
-            <p class="fs-1 fw-bold">特殊風味</p>
-            <p class="fs-1 fw-bold">全新上市</p>
+        <div class="col text-center d-none d-lg-block" style="color: transparent;background-image: linear-gradient(45deg, #F37335, #FDC830 80%); -webkit-background-clip: text;background-clip: text;font-size: 120px;">
+            <p class="fw-bold">特殊風味</p>
+            <p class="fw-bold">全新上市</p>
         </div>
         <div class="col position-relative">
             <a @click="getProduct(product.id)" style="cursor: pointer;">
             <div class="d-lg-none position-absolute" style="top:40%;right:40%"><p class="fs-1 fw-bold text-white mb-5">特殊風味</p><p class="fs-1 fw-bold text-white">全新上市</p></div>
-            <img :src="product.imageUrl" alt="" style="width:500px;height:500px;object-fit: cover;">
+            <img :src="product.imageUrl" alt="" style="width:100%;height:500px;object-fit: cover;">
             </a>
         </div>
     </div>

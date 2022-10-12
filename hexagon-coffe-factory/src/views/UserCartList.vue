@@ -55,7 +55,7 @@
                 <button class="btn btn-outline-dark" type="button" id="button-addon2" @click.prevent="UseCoupon(couponcode)">輸入優惠碼</button>
             </div>
             <button type="button" class="btn btn-danger w-100 mb-4" @click.prevent="DeleteAllCart">刪除所有購物車</button>
-            <button type="button" class="btn btn-dark w-100">進入下一步</button>
+            <router-link class="nav-link fs-3" to="/SendOrder"><button type="button" class="btn btn-dark w-100">進入下一步</button></router-link>
         </div>
     </div>
 </template>
@@ -159,6 +159,7 @@
                     console.log(res)
                     this.getProductCart()
                     this.$emitter.emit('productcart','觸發子元件重新整理')
+                    this.$emitter.emit('opentoast',{style:'danger',text:`移除所有購物車`})
                 })
             },
             UseCoupon(code){
