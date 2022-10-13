@@ -8,14 +8,7 @@
     </h2>
     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
       <div class="accordion-body">
-        <ul>
-            <li>已完成
-                <ul>
-                    <li>建立頁面</li>
-                </ul>
-            </li>
-            <li>待完成</li>
-        </ul>
+
       </div>
     </div>
   </div>
@@ -27,14 +20,7 @@
     </h2>
     <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
       <div class="accordion-body">
-        <ul>
-            <li>已完成
-                <ul>
-                    <li>建立頁面</li>
-                </ul>
-            </li>
-            <li>待完成</li>
-        </ul>
+
       </div>
     </div>
   </div>
@@ -46,14 +32,7 @@
     </h2>
     <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
       <div class="accordion-body">
-        <ul>
-            <li>已完成
-                <ul>
-                    <li>建立頁面</li>
-                </ul>
-            </li>
-            <li>待完成</li>
-        </ul>
+
       </div>
     </div>
   </div>
@@ -65,14 +44,7 @@
     </h2>
     <div id="collapsefour" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
       <div class="accordion-body">
-        <ul>
-            <li>已完成
-                <ul>
-                    <li>建立頁面</li>
-                </ul>
-            </li>
-            <li>待完成</li>
-        </ul>
+
       </div>
     </div>
   </div>
@@ -88,13 +60,5 @@
       </div>
     </div>
   </div>
-  <typewriter2/>
 </div>
 </template>
-
-<script>
-import typewriter2 from '@/components/TypeWriter2.vue'
-export default{
-  components:{typewriter2}
-}
-</script>

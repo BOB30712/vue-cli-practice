@@ -52,7 +52,7 @@
         </div>
         <div class="col position-relative">
             <a @click="getProduct(product.id)" style="cursor: pointer;">
-            <div class="d-lg-none position-absolute" style="top:40%;right:40%"><p class="fs-1 fw-bold text-white mb-5">特殊風味</p><p class="fs-1 fw-bold text-white">全新上市</p></div>
+            <div class="d-lg-none position-absolute" style="top:20%;right:20%;font-size: 80px;"><p class="fw-bold text-nowrap text-white mb-5">特殊風味</p><p class="fw-bold text-nowrap text-white">全新上市</p></div>
             <img :src="product.imageUrl" alt="" style="width:100%;height:500px;object-fit: cover;">
             </a>
         </div>
@@ -68,14 +68,20 @@
           <p class="text-white fs-5">That afternoon, the cup of coffee, let me understand: we who are not who,<br> you are waiting for the coffee to add sugar, I am looking forward to someone who will share the bitter coffee alone.</p>
         </div>
     </div>
-    <div class="row align-items-center my-3 animated-left">
-        <div class="col p-5" style="background-image: linear-gradient(to left top, red,yellow);">
-            <h2>成為咖啡達人</h2>
-            <h2>馬上加入課程</h2>
+    <div class="row align-items-center my-3 animated-left p-4" style="background-image: url(https://i.pinimg.com/236x/05/c3/2d/05c32d47b08b55d2c22fc5a1f8c0eed0.jpg);">
+        <div class="col p-5 text-center fw-bold" style="background-color: transparent;font-size: 50px;">
+            <p class="text-nowrap stroke-text text-white" data-storke="HexagonCoffee星活動">HexagonCoffee星活動</p>
+            <p class="stroke-text2" data-storke="10月壽星可累計與折抵使用point點數">10月壽星可累計與折抵使用point點數</p>
         </div>
-        <div class="col bg-danger p-5" style="background-image: linear-gradient(to top, red,yellow);">
-            <h2>更多好康</h2>
-            <h2>加入會員</h2>
+        <div class="col p-5 text-center" style="background-color:#FDC830;">
+          <div class="col">
+            <p class="text-success fw-bold fs-1">新朋友，星享受</p>
+            <p class="text-success fw-bold fs-3">限量100名優惠</p>
+            <button type="button" class="btn btn-outline-dark w-100 py-3">馬上領取</button>
+          </div>
+          <div class="col">
+
+          </div>
         </div>
     </div>
     <productswiper/>
@@ -222,5 +228,16 @@ body {
 .fadeIn-left {
   opacity: 1;
   transform: translateX(0px);
+}
+.stroke-text2{
+  font-size: 50px;
+  color: white;
+  -webkit-text-stroke: 2px black;
+}
+.stroke-text::before {
+  content: attr(data-storke);
+  position: absolute;
+  -webkit-text-stroke: 10px black;
+  z-index: -1;
 }
 </style>

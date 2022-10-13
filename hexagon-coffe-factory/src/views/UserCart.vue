@@ -15,29 +15,30 @@
         </ul>
     </div>
     <div class="col-lg-8 col-12">
-    <ul class="list-unstyled row row-cols-1 row-cols-lg-3 gy-3">
-        <template v-for="item in filterProduct" :key="item">
-            <li class="col">
-                <div class="card w-100 position-relative test1-link">
-                    <div class="position-absolute top-0 end-0 m-3 test1">
-                        <button :disabled="this.status==item.id" @click.prevent="addFavorite()" style="border: 0px solid black;background-color:transparent;"><i class="bi bi-heart-fill fs-3 py-0 text-danger" v-if="this.status==item.id"></i><i class="bi bi-heart-fill fs-3 py-0 text-white" v-else></i></button>
-                    </div>
-                    <img :src="item.imageUrl" class="card-img-top" alt="..." style="height:200px;object-fit: cover;">
-                    <div class="card-body">
-                        <h3>{{item.content}}咖啡</h3>
-                        <div class="d-flex">
-                            <button class="fs-4 addtocart" @click.prevent="addCart(item.id,item.title)" v-if="this.status!=item.id"><i class="bi bi-cart-fill px-2"></i></button>
-                            <button class="fs-4 ms-2 addtocart" @click.prevent="addCart(item.id,item.title)" disabled v-else><i class="bi bi-box-seam-fill"></i></button>
-                            <p class="card-text ms-auto fs-4">售價$: {{item.price}}</p>
+        <ul class="list-unstyled row row-cols-1 row-cols-lg-3 gy-3">
+            <template v-for="item in productinonepage" :key="item">
+                <li class="col">
+                    <div class="card w-100 position-relative test1-link">
+                        <div class="position-absolute top-0 end-0 m-3 test1">
+                            <button :disabled="this.favorite==item.title" @click.prevent="addFavorite(item.title)" style="border: 0px solid black;background-color:transparent;"><i class="bi bi-heart-fill fs-3 py-0 text-danger" v-if="this.favorite==item.title"></i><i class="bi bi-heart-fill fs-3 py-0 text-white" v-else></i></button>
+                        </div>
+                        <img :src="item.imageUrl" class="card-img-top" alt="商品圖片" style="height:200px;object-fit: cover;">
+                        <div class="card-body">
+                            <h3>{{item.title}}</h3>
+                            <div class="d-flex">
+                                <button class="fs-4 addtocart" @click.prevent="addCart(item.id,item.title)" v-if="this.status!=item.id"><i class="bi bi-cart-fill px-2"></i></button>
+                                <button class="fs-4 ms-2 addtocart" @click.prevent="addCart(item.id,item.title)" disabled v-else><i class="bi bi-box-seam-fill"></i></button>
+                                <p class="card-text ms-auto fs-4">售價$: {{item.price}}</p>
+                            </div>
+                        </div>
+                        <div class="card-img-overlay test1 h-25" style="background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));margin-top: 100px;">
+                            <a @click="getProduct(item.id)"><p class="card-text text-white text-center fw-bold test2 p-3" style="letter-spacing: 5px;">了解更多</p></a>
                         </div>
                     </div>
-                    <div class="card-img-overlay test1 h-25" style="background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));margin-top: 100px;">
-                        <a @click="getProduct(item.id)"><p class="card-text text-white text-center fw-bold test2 p-3" style="letter-spacing: 5px;">了解更多</p></a>
-                    </div>
-                </div>
-            </li>
-        </template>
-    </ul>
+                </li>
+            </template>
+        </ul>
+        <PageComp :alldata='this.products' v-on:pagetest='Page'/>
     </div>
     </div>
 
@@ -121,22 +122,30 @@
 
 <script>
 import $ from 'jquery'
+import PageComp from '@/components/PageComp.vue'
 export default {
     data () {
         return {
             search:'',
             products:[],
-            num:0,
+            page:0,
             status:'',
+            favorite:'',
             isLoading:true
         }
     },
     inject:['message'],
+    components:{
+        PageComp
+    },
     computed:{
         filterProduct(){
             return this.products.filter(item=>{
                 return item.title.match(this.search)
             })
+        },
+        productinonepage(){
+            return this.filterProduct.slice(this.page,this.page+3)
         }
     },
     methods: {
@@ -157,10 +166,10 @@ export default {
         getProduct (id) {
         this.$router.push(`/UserProduct/${id}`)
         },
-        addFavorite(){
-            this.num++;
+        addFavorite(name){
             //localStorage.setItem('count', this.num);
-            this.$emitter.emit('senddata', this.num);
+            this.$emitter.emit('senddata',name);
+            this.favorite=name
         },
         getFavorite(){
             alert(localStorage.getItem('count'))
@@ -178,18 +187,17 @@ export default {
                     this.products=res.data.products
                 }
             });
+        },
+        Page(num){
+            this.page=num*3
         }
     },
     created () {
         const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products/all`
         this.$http.get(api)
         .then((res) => {
-            /*
-          this.products=res.data.products.filter(function(item){
-            return item.category=='卡布奇諾';
-          });
-          */
           this.products=res.data.products;
+          //this.list=this.products;
           this.isLoading=false
           console.log(this.products);
         });

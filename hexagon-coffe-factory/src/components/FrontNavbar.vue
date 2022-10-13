@@ -20,7 +20,7 @@
           <router-link class="link nav-link fs-3" to="/AboutUs">關於我們</router-link>
         </li>
         <li class="nav-item">
-          <router-link class="link nav-link fs-3" to="/AcompPage/AcompPage2"><i class="bi bi-heart"><div class="divright"><p class="rounded px-1">{{num}}</p></div></i></router-link>
+          <a class="link nav-link fs-3" href="#" @click.prevent="openFavoritelist()"><i class="bi bi-heart"><div class="divright"><p class="rounded px-1">{{num}}</p></div></i></a>
         </li>
         <li class="nav-item">
           <router-link class="link nav-link fs-3" to="/UserCartList"><i class="bi bi-cart-fill"><div class="divright"><p class="rounded px-1">{{cartnum}}</p></div></i></router-link>
@@ -29,16 +29,21 @@
     </div>
   </div>
   </nav>
+  <FaModal ref="fModal"/>
 </template>
 
 <script>
     import $ from 'jquery'
+    import FaModal from '@/components/FavoriteModal.vue'
     export default {
       data () {
         return {
-          num:0,
-          cartnum:0
+          cartnum:0,
+          num:0
         }
+      },
+      components:{
+        FaModal
       },
       methods:{
         getproduct(){
@@ -47,6 +52,13 @@
           .then((res) => {
             this.cartnum=res.data.data.carts.length
           })
+        },
+        updatenum(){
+          this.num++
+        },
+        openFavoritelist(){
+          const Component = this.$refs.fModal
+          Component.show()
         }
       },
       created(){
@@ -55,8 +67,8 @@
             .then((res) => {
                 this.cartnum=res.data.data.carts.length
             })
-        this.$emitter.on('senddata', (data) => { this.num = data })
         this.$emitter.on('productcart', this.getproduct)
+        this.$emitter.on('senddata', this.updatenum)
         /*
         if(localStorage.getItem('count')){
         this.num=localStorage.getItem('count22');
