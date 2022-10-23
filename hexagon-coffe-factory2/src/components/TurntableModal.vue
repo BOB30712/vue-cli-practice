@@ -103,11 +103,27 @@ export default{
             gsap.to('.pie',{rotation:3600+randomarry[final],duration:8});
             gsap.to('.Congrats',{opacity:1,duration:1,delay:9})
             this.gift=final+1
+            if(final+1==1){
+                this.updateCoupon('788')
+            }else if(final+1==3){
+                this.updateCoupon('999')
+            }
         },
         Reset(){
             gsap.to('.pie',{transform:'rotate(0deg)',duration:1});
             gsap.to('.Congrats',{opacity:0,duration:1})
             this.gift=''
+        },
+        updateCoupon(name){
+            const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/coupon`
+            const coupon = {
+                code: name
+            }
+            this.$http.post(url, { data: coupon })
+            .then((res) => {
+                console.log(res)
+                this.$emit('update','更新購物車')
+            })
         }
     },
     mounted(){

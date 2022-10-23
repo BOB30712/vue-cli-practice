@@ -42,7 +42,10 @@
                     </button>
                     </div>
                 </td>
-                <td>{{item.final_total}}</td>
+                <td>
+                    <p class="mb-0" :class="{'text-decoration-line-through':item.coupon}">總價{{item.total}}</p>
+                    <p class="mb-0 text-success" v-if="item.coupon">折扣後{{item.final_total}}</p>
+                </td>
                 <td class="text-center fs-3"><button @click.prevent="DeleteCart(item.id)"><i class="bi bi-x-square-fill"></i></button></td>
                 </tr>
             </tbody>
@@ -50,14 +53,13 @@
         </div>
         <div class="col-lg-3 col-10 border border-secondary border-3 p-3 mb-5 h-100">
             <p>商品總計:<span class="fs-3 fw-bold ms-2">{{totalPrice}}</span></p>
-            <div class="input-group mb-3 mt-auto">
-                <input type="text" class="form-control" placeholder="輸入優惠碼" aria-label="Recipient's username" aria-describedby="button-addon2" v-model="couponcode">
-                <button class="btn btn-outline-dark" type="button" id="button-addon2" @click.prevent="UseCoupon(couponcode)">輸入優惠碼</button>
-            </div>
+            <p v-if="useCoupon" class="text-success">套用優惠卷後:<span class="fs-3 fw-bold ms-2">{{finalPrice}}</span></p>
+            <button type="button" class="btn btn-success w-100 mb-4" @click.prevent="openModal">抽獎</button>
             <button type="button" class="btn btn-danger w-100 mb-4" @click.prevent="DeleteAllCart">刪除所有購物車</button>
             <router-link class="nav-link fs-3" to="/SendOrder"><button type="button" class="btn btn-dark w-100">進入下一步</button></router-link>
         </div>
     </div>
+    <turntable ref='turntable' @update="getProductCart"/>
 </template>
 
 <style>
@@ -107,21 +109,32 @@
 </style>
 
 <script>
+import turntable from '@/components/TurntableModal.vue'
     export default {
         data () {
             return {
                 ProductCart:[],
                 totalPrice:0,
-                couponcode:''
+                finalPrice:0,
+                couponcode:'',
+                useCoupon:false
             }
+        },
+        components:{
+            turntable
         },
         methods:{
             getProductCart () {
                 const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`
                     this.$http.get(url)
                     .then((res) => {
+                        console.log(res)
                         this.ProductCart=res.data.data.carts
-                        this.totalPrice=res.data.data.final_total
+                        this.totalPrice=res.data.data.total
+                        this.finalPrice=res.data.data.final_total
+                        if(res.data.data.final_total!=res.data.data.total){
+                            this.useCoupon=true
+                        }
                     })
             },
             UpdateCartQty(id,qty){
@@ -161,6 +174,11 @@
                 .then(() => {
                     this.getProductCart();
                 });
+            },
+            openModal(){
+                const Component = this.$refs.turntable
+                Component.show()
+                this.getProductCart();
             }
         },
         created () {
